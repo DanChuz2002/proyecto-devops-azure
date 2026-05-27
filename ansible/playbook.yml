@@ -1,0 +1,84 @@
+---
+- name: Configurar y desplegar plataforma DevOps en Azure VM
+  hosts: azure_vm
+  become: yes
+
+  tasks:
+    - name: Actualizar paquetes del sistema
+      apt:
+        update_cache: yes
+
+    - name: Instalar dependencias necesarias
+      apt:
+        name:
+          - docker.io
+          - python3
+          - python3-pip
+          - curl
+        state: present
+
+    - name: Habilitar servicio Docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Agregar usuario azureuser al grupo docker
+      user:
+        name: azureuser
+        groups: docker
+        append: yes
+
+    - name: Crear carpeta de monitoreo
+      file:
+        path: /home/azureuser/monitoring
+        state: directory
+        owner: azureuser
+        group: azureuser
+        mode: "0755"
+
+    - name: Copiar archivo docker-stack.yml
+      copy:
+        src: ../docker-stack.yml
+        dest: /home/azureuser/docker-stack.yml
+        owner: azureuser
+        group: azureuser
+        mode: "0644"
+
+    - name: Copiar configuración de Prometheus
+      copy:
+        src: ../monitoring/prometheus.yml
+        dest: /home/azureuser/monitoring/prometheus.yml
+        owner: azureuser
+        group: azureuser
+        mode: "0644"
+
+    - name: Verificar estado de Docker Swarm
+      shell: docker info --format '{{ "{{.Swarm.LocalNodeState}}" }}'
+      register: swarm_state
+      changed_when: false
+      become_user: azureuser
+
+    - name: Inicializar Docker Swarm si no está activo
+      shell: docker swarm init --advertise-addr {{ ansible_host }}
+      when: swarm_state.stdout != "active"
+      become_user: azureuser
+
+    - name: Desplegar stack del proyecto
+      shell: docker stack deploy -c /home/azureuser/docker-stack.yml proyecto
+      become_user: azureuser
+
+    - name: Forzar actualización del servicio web
+      shell: docker service update --force proyecto_web
+      become_user: azureuser
+      ignore_errors: yes
+
+    - name: Mostrar servicios desplegados
+      shell: docker service ls
+      register: servicios
+      changed_when: false
+      become_user: azureuser
+
+    - name: Imprimir servicios activos
+      debug:
+        var: servicios.stdout_lines
