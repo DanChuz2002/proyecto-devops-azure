@@ -6,4 +6,48 @@ services:
     container_name: proyecto-devops-web
     ports:
       - "5000:5000"
-    restart: alwaysdocker compose down
+    environment:
+      DB_HOST: db
+      DB_NAME: proyectodb
+      DB_USER: admin
+      DB_PASSWORD: admin123
+      DB_PORT: 5432
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: proyecto-devops-db
+    environment:
+      POSTGRES_DB: proyectodb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  prometheus:
+    image: prom/prometheus
+    container_name: proyecto-devops-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - web
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: proyecto-devops-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    restart: always
+
+volumes:
+  postgres_data:

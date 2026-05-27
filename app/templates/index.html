@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DevOps Cloud Platform</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="layout">
+    <aside class="sidebar">
+        <h2>DevOps Cloud</h2>
+        <p>Azure · Docker · CI/CD</p>
+
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/health" target="_blank">Health Check</a>
+            <a href="/info" target="_blank">Info API</a>
+            <a href="/db" target="_blank">Base de Datos</a>
+            <a href="/metrics" target="_blank">Metrics</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <section class="hero">
+            <div>
+                <h1>Plataforma DevOps en Azure</h1>
+                <p>
+                    Arquitectura moderna con contenedores, CI/CD, Docker Swarm,
+                    PostgreSQL, monitoreo y despliegue automático.
+                </p>
+            </div>
+            <span class="badge">ONLINE</span>
+        </section>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Cloud</h3>
+                <p>Infraestructura desplegada en Microsoft Azure usando una máquina virtual Ubuntu.</p>
+            </div>
+
+            <div class="card">
+                <h3>Contenedores</h3>
+                <p>Aplicación ejecutándose en Docker y orquestada mediante Docker Swarm.</p>
+            </div>
+
+            <div class="card">
+                <h3>CI/CD</h3>
+                <p>Pipeline automático con GitHub Actions, Docker Hub y despliegue hacia Azure.</p>
+            </div>
+
+            <div class="card">
+                <h3>Base de Datos</h3>
+                <p>PostgreSQL ejecutándose como servicio dentro del stack de Docker Swarm.</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Endpoints disponibles</h2>
+
+            <div class="endpoint">
+                <span>GET</span>
+                <code>/health</code>
+                <p>Valida el estado de salud de la aplicación.</p>
+            </div>
+
+            <div class="endpoint">
+                <span>GET</span>
+                <code>/info</code>
+                <p>Muestra información técnica del proyecto.</p>
+            </div>
+
+            <div class="endpoint">
+                <span>GET</span>
+                <code>/db</code>
+                <p>Prueba la conexión con PostgreSQL e inserta registros.</p>
+            </div>
+
+            <div class="endpoint">
+                <span>GET / POST</span>
+                <code>/api/visitas</code>
+                <p>API REST para consultar o crear registros en la base de datos.</p>
+            </div>
+
+            <div class="endpoint">
+                <span>GET</span>
+                <code>/metrics</code>
+                <p>Métricas compatibles con Prometheus.</p>
+            </div>
+        </section>
+    </main>
+</div>
+
+</body>
+</html>
