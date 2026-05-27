@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }} | DevOps Cloud</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<div class="detail-page">
+    <div class="detail-card">
+        <a class="back-link" href="/">← Volver al Dashboard</a>
+
+        <div class="detail-header">
+            <div>
+                <span class="tag">{{ etiqueta }}</span>
+                <h1>{{ titulo }}</h1>
+                <p>{{ subtitulo }}</p>
+            </div>
+            <div class="status-card dark">
+                <span class="pulse"></span>
+                <strong>ACTIVO</strong>
+                <small>Azure Docker Swarm</small>
+            </div>
+        </div>
+
+        <div class="json-panel">
+            <h2>Resultado</h2>
+            <pre>{{ datos | tojson(indent=2) }}</pre>
+        </div>
+
+        <div class="panel-actions">
+            <a href="/health" target="_blank">Ver JSON /health</a>
+            <a href="/db" target="_blank">Ver JSON /db</a>
+            <a href="/metrics" target="_blank">Ver métricas</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -9,87 +9,156 @@
 
 <div class="layout">
     <aside class="sidebar">
-        <h2>DevOps Cloud</h2>
-        <p>Azure · Docker · CI/CD</p>
+        <div class="brand">
+            <div class="logo">D</div>
+            <div>
+                <h2>DevOps Cloud</h2>
+                <p>Azure · Docker · CI/CD</p>
+            </div>
+        </div>
 
         <nav>
             <a href="/">Dashboard</a>
-            <a href="/health" target="_blank">Health Check</a>
-            <a href="/info" target="_blank">Info API</a>
-            <a href="/db" target="_blank">Base de Datos</a>
-            <a href="/metrics" target="_blank">Metrics</a>
+            <a href="/panel/health">Health Check</a>
+            <a href="/panel/db">Base de Datos</a>
+            <a href="/panel/status">API Status</a>
+            <a href="/panel/visitas">API Visitas</a>
+            <a href="/panel/metrics">Métricas</a>
+            <button onclick="abrirServicio(9090)">Prometheus</button>
+            <button onclick="abrirServicio(3000)">Grafana</button>
         </nav>
     </aside>
 
     <main class="content">
         <section class="hero">
             <div>
+                <span class="tag">Proyecto Final · Sistemas Operativos II</span>
                 <h1>Plataforma DevOps en Azure</h1>
                 <p>
-                    Arquitectura moderna con contenedores, CI/CD, Docker Swarm,
-                    PostgreSQL, monitoreo y despliegue automático.
+                    Infraestructura moderna desplegada en la nube con Docker Swarm,
+                    PostgreSQL, GitHub Actions, Prometheus, Grafana y automatización con Ansible.
                 </p>
             </div>
-            <span class="badge">ONLINE</span>
+            <div class="status-card">
+                <span class="pulse"></span>
+                <strong>ONLINE</strong>
+                <small>Servicios activos</small>
+            </div>
         </section>
 
         <section class="cards">
             <div class="card">
                 <h3>Cloud</h3>
-                <p>Infraestructura desplegada en Microsoft Azure usando una máquina virtual Ubuntu.</p>
+                <p>Máquina virtual Ubuntu desplegada en Microsoft Azure con IP pública y reglas de seguridad.</p>
+                <a href="/info" target="_blank">Ver información</a>
             </div>
 
             <div class="card">
                 <h3>Contenedores</h3>
-                <p>Aplicación ejecutándose en Docker y orquestada mediante Docker Swarm.</p>
-            </div>
-
-            <div class="card">
-                <h3>CI/CD</h3>
-                <p>Pipeline automático con GitHub Actions, Docker Hub y despliegue hacia Azure.</p>
+                <p>Aplicación ejecutada en Docker y orquestada mediante Docker Swarm con réplicas activas.</p>
+                <a href="/api/status" target="_blank">Ver estado</a>
             </div>
 
             <div class="card">
                 <h3>Base de Datos</h3>
                 <p>PostgreSQL ejecutándose como servicio dentro del stack de Docker Swarm.</p>
+                <a href="/db" target="_blank">Probar conexión</a>
+            </div>
+
+            <div class="card">
+                <h3>Monitoreo</h3>
+                <p>Métricas expuestas por la app y recolectadas por Prometheus.</p>
+                <a href="/metrics" target="_blank">Ver métricas</a>
             </div>
         </section>
 
         <section class="panel">
-            <h2>Endpoints disponibles</h2>
-
-            <div class="endpoint">
-                <span>GET</span>
-                <code>/health</code>
-                <p>Valida el estado de salud de la aplicación.</p>
+            <div class="panel-header">
+                <div>
+                    <h2>Centro de Control</h2>
+                    <p>Accesos rápidos a los servicios principales de la plataforma.</p>
+                </div>
             </div>
 
-            <div class="endpoint">
-                <span>GET</span>
-                <code>/info</code>
-                <p>Muestra información técnica del proyecto.</p>
+            <div class="quick-actions">
+                <a class="action" href="/panel/health" target="_blank">
+                    <span>Health</span>
+                    <strong>Validar app</strong>
+                    <small>Endpoint /health</small>
+                </a>
+
+                <a class="action" href="/panel/db" target="_blank">
+                    <span>DB</span>
+                    <strong>PostgreSQL</strong>
+                    <small>Endpoint /db</small>
+                </a>
+
+                <a class="action" href="/panel/status" target="_blank">
+                    <span>API</span>
+                    <strong>Estado API</strong>
+                    <small>/api/status</small>
+                </a>
+
+                <a class="action" href="/panel/visitas" target="_blank">
+                    <span>REST</span>
+                    <strong>Visitas</strong>
+                    <small>/api/visitas</small>
+                </a>
+
+                <a class="action" href="/panel/metrics" target="_blank">
+                    <span>MET</span>
+                    <strong>Métricas</strong>
+                    <small>/metrics</small>
+                </a>
+
+                <button class="action button-action" onclick="abrirServicio(9090)">
+                    <span>PRO</span>
+                    <strong>Prometheus</strong>
+                    <small>Puerto 9090</small>
+                </button>
+
+                <button class="action button-action" onclick="abrirServicio(3000)">
+                    <span>GRA</span>
+                    <strong>Grafana</strong>
+                    <small>Puerto 3000</small>
+                </button>
+            </div>
+        </section>
+
+        <section class="architecture">
+            <h2>Arquitectura implementada</h2>
+
+            <div class="flow">
+                <div>Usuario</div>
+                <span>→</span>
+                <div>Azure VM</div>
+                <span>→</span>
+                <div>Docker Swarm</div>
+                <span>→</span>
+                <div>Flask API</div>
+                <span>→</span>
+                <div>PostgreSQL</div>
             </div>
 
-            <div class="endpoint">
-                <span>GET</span>
-                <code>/db</code>
-                <p>Prueba la conexión con PostgreSQL e inserta registros.</p>
-            </div>
-
-            <div class="endpoint">
-                <span>GET / POST</span>
-                <code>/api/visitas</code>
-                <p>API REST para consultar o crear registros en la base de datos.</p>
-            </div>
-
-            <div class="endpoint">
-                <span>GET</span>
-                <code>/metrics</code>
-                <p>Métricas compatibles con Prometheus.</p>
+            <div class="flow secondary">
+                <div>GitHub</div>
+                <span>→</span>
+                <div>GitHub Actions</div>
+                <span>→</span>
+                <div>Docker Hub</div>
+                <span>→</span>
+                <div>Deploy Azure</div>
             </div>
         </section>
     </main>
 </div>
+
+<script>
+    function abrirServicio(puerto) {
+        const host = window.location.hostname;
+        window.open(`http://${host}:${puerto}`, "_blank");
+    }
+</script>
 
 </body>
 </html>
