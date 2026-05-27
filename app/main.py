@@ -7,7 +7,7 @@ app = Flask(__name__)
 def inicio():
     return jsonify({
         "proyecto": "Infraestructura DevOps en Azure",
-        "mensaje": "Aplicacion desplegada correctamente en Microsoft Azure",
+        "mensaje": "Aplicacion actualizada automaticamente con GitHub Actions",
         "estado": "OK"
     })
 
