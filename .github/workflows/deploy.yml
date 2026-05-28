@@ -23,18 +23,34 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest .
 
-            - name: Escaneo de vulnerabilidades con Trivy
+      - name: Prueba básica del contenedor
         run: |
-          docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            aquasec/trivy:latest image \
+          docker run -d -p 5000:5000 --name test-app ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest
+          sleep 10
+          curl -f http://localhost:5000/health
+          docker stop test-app
+          docker rm test-app
+
+      - name: Escaneo de vulnerabilidades con Trivy
+        run: |
+          docker run --rm aquasec/trivy:latest image \
             --severity HIGH,CRITICAL \
             --exit-code 0 \
+            --no-progress \
             ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest
 
       - name: Subir imagen a Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest
+
+      - name: Copiar archivos de despliegue a Azure VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_HOST }}
+          username: ${{ secrets.AZURE_USER }}
+          key: ${{ secrets.AZURE_SSH_KEY }}
+          source: "docker-stack.yml,monitoring/prometheus.yml"
+          target: "/home/${{ secrets.AZURE_USER }}/"
 
       - name: Desplegar en Azure VM
         uses: appleboy/ssh-action@v1.0.3
