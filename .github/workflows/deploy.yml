@@ -23,6 +23,15 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest .
 
+            - name: Escaneo de vulnerabilidades con Trivy
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            --severity HIGH,CRITICAL \
+            --exit-code 0 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest
+
       - name: Subir imagen a Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/proyecto-devops-azure:latest
